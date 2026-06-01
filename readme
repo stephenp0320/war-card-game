@@ -1,0 +1,549 @@
+# War Card Game
+
+A simple Java-based version of the classic card game **War**.
+
+This project is designed as a two-person programming project, where both developers can work together using **VS Code Live Share** or GitHub. The goal is to practise object-oriented programming, class design, queues, game logic, and clean project structure.
+
+---
+
+## Project Idea
+
+War is a two-player card game.
+
+The deck is shuffled and split evenly between two players. Each round, both players draw their top card. The player with the higher card wins the round and takes both cards.
+
+If both cards have the same value, a **war** happens. During war, both players place cards face down, then flip another card. The higher card wins the full pile.
+
+---
+
+## Example Game Output
+
+```text
+================================
+          WAR CARD GAME
+================================
+
+Round 1
+
+Stephen plays: 10 of Hearts
+Brother plays: 6 of Clubs
+
+Stephen wins the round!
+
+Stephen cards: 27
+Brother cards: 25
+```
+
+War example:
+
+```text
+Round 8
+
+Stephen plays: Jack of Spades
+Brother plays: Jack of Diamonds
+
+WAR!
+
+Stephen places 3 cards face down.
+Brother places 3 cards face down.
+
+Stephen war card: 8 of Hearts
+Brother war card: Queen of Clubs
+
+Brother wins the war!
+
+Stephen cards: 20
+Brother cards: 32
+```
+
+---
+
+## System Design
+
+```text
+┌──────────────────────────────────────────────┐
+│                  Main.java                   │
+│                                              │
+│  Starts the program                          │
+│  Creates the Game object                     │
+│  Calls game.start()                          │
+└──────────────────────┬───────────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────────┐
+│                  Game.java                   │
+│                                              │
+│  Controls the full game                      │
+│                                              │
+│  - Creates players                           │
+│  - Creates deck                              │
+│  - Shuffles deck                             │
+│  - Deals cards                               │
+│  - Runs each round                           │
+│  - Handles war                               │
+│  - Checks winner                             │
+└───────┬──────────────────────────────┬───────┘
+        │                              │
+        ▼                              ▼
+┌───────────────────┐          ┌───────────────────┐
+│    Player.java    │          │     Deck.java      │
+│                   │          │                   │
+│  Represents one   │          │  Represents the   │
+│  player           │          │  full deck         │
+│                   │          │                   │
+│  - name           │          │  - 52 cards        │
+│  - hand           │          │  - shuffle         │
+│  - play card      │          │  - draw card       │
+│  - receive cards  │          │  - deal cards      │
+└─────────┬─────────┘          └─────────┬─────────┘
+          │                              │
+          ▼                              ▼
+┌───────────────────┐          ┌───────────────────┐
+│   Queue<Card>     │          │     Card.java      │
+│                   │          │                   │
+│  Player's hand    │          │  Represents one   │
+│                   │          │  card              │
+│  Front = draw     │          │                   │
+│  Back = add wins  │          │  - value           │
+│                   │          │  - suit            │
+└───────────────────┘          │  - display name    │
+                               └───────────────────┘
+```
+
+---
+
+## Class Structure
+
+```text
+WarCardGame
+│
+├── Main.java
+│
+├── Game.java
+│   ├── Player player1
+│   ├── Player player2
+│   ├── Deck deck
+│   └── int roundNumber
+│
+├── Player.java
+│   ├── String name
+│   └── Queue<Card> hand
+│
+├── Deck.java
+│   └── ArrayList<Card> cards
+│
+└── Card.java
+    ├── int value
+    └── String suit
+```
+
+---
+
+## Main Classes
+
+### Card
+
+Represents one playing card.
+
+Example cards:
+
+```text
+Ace of Spades
+10 of Hearts
+Queen of Clubs
+```
+
+Responsibilities:
+
+```text
+- Store card value
+- Store card suit
+- Display the card
+- Allow card values to be compared
+```
+
+Suggested values:
+
+```text
+2  = Two
+3  = Three
+4  = Four
+5  = Five
+6  = Six
+7  = Seven
+8  = Eight
+9  = Nine
+10 = Ten
+11 = Jack
+12 = Queen
+13 = King
+14 = Ace
+```
+
+---
+
+### Deck
+
+Represents the full deck of 52 cards.
+
+Responsibilities:
+
+```text
+- Create all 52 cards
+- Store the cards before dealing
+- Shuffle the deck
+- Allow cards to be drawn
+- Deal cards to players
+```
+
+---
+
+### Player
+
+Represents each player.
+
+Each player has a queue of cards.
+
+A queue is useful because in War:
+
+```text
+- Cards are drawn from the front
+- Won cards are added to the back
+```
+
+Responsibilities:
+
+```text
+- Store player name
+- Store player's hand
+- Draw top card
+- Receive won cards
+- Check how many cards the player has
+- Check if the player still has cards
+```
+
+---
+
+### Game
+
+Controls the whole game.
+
+Responsibilities:
+
+```text
+- Create the players
+- Create the deck
+- Shuffle the deck
+- Deal cards
+- Run each round
+- Compare cards
+- Handle war
+- Check if the game is over
+- Print the winner
+```
+
+---
+
+## Game Flow
+
+```text
+┌─────────────┐
+│ Start Game  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Create Deck │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Shuffle Deck│
+└──────┬──────┘
+       │
+       ▼
+┌────────────────┐
+│ Create Players │
+└──────┬─────────┘
+       │
+       ▼
+┌─────────────┐
+│ Deal Cards  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────────────┐
+│ Both players have   │
+│ cards left?         │
+└──────┬──────────────┘
+       │
+       │ Yes
+       ▼
+┌─────────────────────┐
+│ Player 1 draws card │
+└──────┬──────────────┘
+       │
+       ▼
+┌─────────────────────┐
+│ Player 2 draws card │
+└──────┬──────────────┘
+       │
+       ▼
+┌─────────────────────┐
+│ Compare card values │
+└──────┬──────────────┘
+       │
+       ├── Player 1 higher ───► Player 1 gets pile
+       │
+       ├── Player 2 higher ───► Player 2 gets pile
+       │
+       └── Same value ────────► WAR!
+       │
+       ▼
+┌─────────────────────┐
+│ Next round          │
+└──────┬──────────────┘
+       │
+       ▼
+┌─────────────────────┐
+│ Someone has no cards│
+└──────┬──────────────┘
+       │
+       ▼
+┌─────────────┐
+│ Print Winner│
+└─────────────┘
+```
+
+---
+
+## Round Logic
+
+```text
+┌────────────────────────┐
+│      playRound()       │
+└───────────┬────────────┘
+            │
+            ▼
+┌────────────────────────┐
+│ p1Card = player1.draw  │
+│ p2Card = player2.draw  │
+└───────────┬────────────┘
+            │
+            ▼
+┌────────────────────────┐
+│ Add both cards to pile │
+└───────────┬────────────┘
+            │
+            ▼
+┌────────────────────────┐
+│ Compare p1Card/p2Card  │
+└───────────┬────────────┘
+            │
+ ┌──────────┼───────────┐
+ │          │           │
+ ▼          ▼           ▼
+P1 wins   P2 wins      Equal
+ │          │           │
+ ▼          ▼           ▼
+P1 gets   P2 gets     handleWar()
+pile      pile
+```
+
+---
+
+## War Logic
+
+When both players draw cards of the same value, war begins.
+
+```text
+┌────────────────────────────┐
+│         handleWar()        │
+└─────────────┬──────────────┘
+              │
+              ▼
+┌────────────────────────────┐
+│ Check both players have    │
+│ enough cards               │
+└─────────────┬──────────────┘
+              │
+      ┌───────┴────────┐
+      │                │
+      ▼                ▼
+Not enough cards     Enough cards
+      │                │
+      ▼                ▼
+Other player wins   Each player places
+remaining pile      3 cards face down
+                       │
+                       ▼
+                  Each player flips
+                  1 war card
+                       │
+                       ▼
+                  Compare war cards
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+       P1 wins      P2 wins       Tie again
+          │            │            │
+          ▼            ▼            ▼
+       P1 gets      P2 gets     Repeat war
+       full pile    full pile
+```
+
+---
+
+## Object Relationship Diagram
+
+```text
+┌────────────┐
+│    Game    │
+└─────┬──────┘
+      │ owns
+      ▼
+┌────────────┐
+│   Deck     │
+└─────┬──────┘
+      │ contains
+      ▼
+┌────────────┐
+│   Card     │
+└────────────┘
+
+
+┌────────────┐
+│    Game    │
+└─────┬──────┘
+      │ owns
+      ▼
+┌────────────┐
+│  Player    │
+└─────┬──────┘
+      │ has many
+      ▼
+┌────────────┐
+│   Card     │
+└────────────┘
+```
+
+---
+
+## Recommended Project Layout
+
+```text
+WarCardGame/
+│
+├── src/
+│   ├── Main.java
+│   ├── Game.java
+│   ├── Player.java
+│   ├── Deck.java
+│   └── Card.java
+│
+└── README.md
+```
+
+---
+
+## Suggested Features
+
+### Basic Version
+
+```text
+- Create a 52-card deck
+- Shuffle the deck
+- Create two players
+- Deal 26 cards to each player
+- Play rounds
+- Compare card values
+- Give won cards to the round winner
+- Detect when a player has no cards
+- Print the winner
+```
+
+### Intermediate Version
+
+```text
+- Add proper war logic
+- Add player names
+- Add round counter
+- Add card count after each round
+- Add "Press Enter to continue"
+- Improve terminal display
+```
+
+### Advanced Version
+
+```text
+- Add ASCII card art
+- Add save/load game
+- Add game statistics
+- Add best-of-three mode
+- Add menu system
+- Add LAN multiplayer later
+```
+
+---
+
+## Responsibility Split
+
+This project is good for two people because the work can be split clearly.
+
+### Developer 1
+
+```text
+- Card class
+- Deck class
+- Shuffle logic
+- Deal logic
+```
+
+### Developer 2
+
+```text
+- Player class
+- Queue/card hand logic
+- playRound()
+- handleWar()
+```
+
+### Both Developers
+
+```text
+- Main menu
+- Testing
+- Better terminal output
+- Bug fixing
+- Extra features
+```
+
+---
+
+## Key Design Decision
+
+The most important design choice is:
+
+```text
+Player hand = Queue<Card>
+```
+
+This is because War works like a queue:
+
+```text
+Draw from the front
+Add won cards to the back
+```
+
+That makes `Queue<Card>` the correct data structure for each player's hand.
+
+---
+
+## Final Mental Model
+
+```text
+Card   = one playing card
+Deck   = creates and shuffles all cards
+Player = owns a queue of cards
+Game   = controls the rules and decides who wins
+```
