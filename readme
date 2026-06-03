@@ -7,7 +7,6 @@ This project is designed as a two-person programming project, where both develop
 ---
 
 ## Project Idea
-
 War is a two-player card game.
 
 The deck is shuffled and split evenly between two players. Each round, both players draw their top card. The player with the higher card wins the round and takes both cards.
