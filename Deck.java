@@ -47,17 +47,11 @@ public class Deck {
     }
 
     public String getPlayerOneCard() {
-        String playercard = playerOneHand.getFirst();
-        pile.add(playercard);
-        playerOneHand.remove(playercard);
-        return playercard;
+        return playerOneHand.remove(0);
     }
 
     public String getPlayerTwoCard() {
-        String playercard = playerTwoHand.getFirst();
-        pile.add(playercard);
-        playerTwoHand.remove(playercard);
-        return playercard;
+        return playerTwoHand.remove(0);
     }
 
     public int getCardValue(String card) {

@@ -21,25 +21,12 @@ class Game {
         int playerOneHasCards = playerOneHand.size();
         int playerTwoHasCards = playerTwoHand.size();
 
-        System.out.println("Player Ones Hand");
-        System.out.println(playerOneHand);
-        
-        System.out.println("Player Ones Card");
-        System.out.println(deck.getPlayerOneCard());
-        System.out.println(" ");
-        System.out.println("Player Twos Hand");
-        System.out.println(playerTwoHand);
-        System.out.println("Player Twos Card");
-        System.out.println(deck.getPlayerTwoCard());
         
         round(cardPile);
 
     }
 
     public void round(List<String> cardPile) {
-        // draw logic should be in here
-        // cards added to the pile
-        // compareCard() is called
         while (!playerOneHand.isEmpty() && !playerTwoHand.isEmpty()) {
             cardPile.clear();
             String p1Card = deck.getPlayerOneCard();
@@ -48,6 +35,12 @@ class Game {
             cardPile.add(p1Card);
             cardPile.add(p2Card);
             compareCard(p1Card, p2Card);
+        }
+
+        if (playerOneHand.isEmpty()){
+            System.out.println(playerTwo.getName() + " wins!");
+        } else {
+            System.out.println(playerOne.getName() + " wins!");
         }
     }
 
@@ -58,16 +51,38 @@ class Game {
             handleWar();
         } else if (playerOneValue > playerTwoValue) {
             System.out.println(playerOne.getName() + " wins the round");
-            playerOneHand.add(playerOneCard);
-            playerOneHand.add(playerTwoCard);
+            playerOneHand.addAll(cardPile);
         } else {
             System.out.println(playerTwo.getName() + " wins the round");
-            playerTwoHand.add(playerOneCard);
-            playerTwoHand.add(playerTwoCard);
+            playerTwoHand.addAll(cardPile);
         }
     }
 
     public void handleWar() {
+        System.out.println("WAR");
+
+        if (playerOne.getNumberOfCards() < 4 && playerTwo.getNumberOfCards() < 4){
+            System.out.println("not enough cards to play war");
+            System.exit(0);
         
+        if (playerOne.getNumberOfCards() < 4 && playerTwo.getNumberOfCards() >=4) {
+            System.out.println(playerOne.getName() + " has no cards. " + playerTwo.getName() + " wins!");
+            // player 2 wins the pile
+            playerTwoHand.addAll(cardPile);
+        } else if (playerOne.getNumberOfCards() >=4 && playerTwo.getNumberOfCards() < 4) {
+            System.out.println(playerTwo.getName() + " has no cards. " + playerOne.getName() + " wins!");
+            //player 1 wins the pile
+            playerOneHand.addAll(cardPile);        
+        } else {
+            for (int i = 0; i < 3; i++) {
+                cardPile.add(playerOne.getFirstCard());
+                cardPile.add(playerTwo.getFirstCard());
+            }
+
+            String p1WarCard = playerOne.getFirstCard();
+            String p2WarCard = playerTwo.getFirstCard();
+            compareCard(p1WarCard, p2WarCard);
+        }
+        }   
     }
 }
