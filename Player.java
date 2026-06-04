@@ -28,8 +28,8 @@ public class Player {
         return count;
     }
     
-    
-
-    
+    public String getName() {
+        return name;
+    }
 }
 

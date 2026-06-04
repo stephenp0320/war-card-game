@@ -59,4 +59,13 @@ public class Deck {
         playerTwoHand.remove(playercard);
         return playercard;
     }
+
+    public int getCardValue(String card) {
+        String rank = card.split(" of ")[0];
+        if (rank.equals("Jack")) return 11;
+        if (rank.equals("Queen")) return 12;
+        if (rank.equals("King")) return 13;
+        if (rank.equals("Ace")) return 14;
+        return Integer.parseInt(rank);
+    }
 }
