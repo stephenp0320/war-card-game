@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/javafx.controls.jar",
+        "lib/javafx.base.jar",
+        "lib/javafx.graphics.jar"
+    ]
+}
