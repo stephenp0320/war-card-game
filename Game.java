@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class Game {
@@ -9,6 +10,8 @@ class Game {
     
     Player playerOne = new Player("Stephen", playerOneHand);
     Player playerTwo = new Player("Eoin", playerTwoHand);
+
+    int round_counter = 1;
     
     public void startGame(){
         System.out.println("This is the card game called War!");
@@ -27,6 +30,7 @@ class Game {
     }
 
     public void round(List<String> cardPile) {
+
         while (!playerOneHand.isEmpty() && !playerTwoHand.isEmpty()) {
             cardPile.clear();
             String p1Card = deck.getPlayerOneCard();
@@ -39,8 +43,10 @@ class Game {
 
         if (playerOneHand.isEmpty()){
             System.out.println(playerTwo.getName() + " wins!");
+            
         } else {
             System.out.println(playerOne.getName() + " wins!");
+            
         }
     }
 
@@ -48,17 +54,23 @@ class Game {
         int playerOneValue = deck.getCardValue(playerOneCard);
         int playerTwoValue = deck.getCardValue(playerTwoCard);
 
-        System.out.println(playerOne.getName() + "card value: " + deck.getCardValue(playerOneCard));
-        System.out.println(playerTwo.getName() + "card value: " + deck.getCardValue(playerTwoCard));
+        System.out.println(playerOne.getName() + "'s" + " card value: " + deck.getCardValue(playerOneCard));
+        System.out.println(playerTwo.getName() + "'s" + " card value: " + deck.getCardValue(playerTwoCard));
         
         if (playerOneValue == playerTwoValue) {
             handleWar();
         } else if (playerOneValue > playerTwoValue) {
-            System.out.println(playerOne.getName() + " wins the round");
+            System.out.println(playerOne.getName() + " wins round " + round_counter);
+            Collections.shuffle(cardPile);
             playerOneHand.addAll(cardPile);
+            cardPile.clear();
+            round_counter++;
         } else {
-            System.out.println(playerTwo.getName() + " wins the round");
+            System.out.println(playerTwo.getName() + " wins round " + round_counter);
+            Collections.shuffle(cardPile);
             playerTwoHand.addAll(cardPile);
+            cardPile.clear();
+            round_counter++;
         }
     }
 
