@@ -9,11 +9,11 @@ public class Player {
 
     public Player(String name, List<String> pHand) {
         this.name = name;
-        this.playerHand = new ArrayList<>(pHand);
+        this.playerHand = pHand;
     }
 
     public String getFirstCard() {
-        return playerHand.get(0);
+        return playerHand.remove(0);
     }
 
     public List<String> getPlayerHand(){
